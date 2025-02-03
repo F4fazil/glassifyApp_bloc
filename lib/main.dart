@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
     return  BlocProvider(
       create: (context) => Authbloc(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
       home: LoginScreen(),
        ),
       );

@@ -12,35 +12,35 @@ class Authbloc extends Bloc<Authevent, Authstate> {
     on<LogoutIsRequested>(_logOut);
   }
 
-  void _signIn(SignInRequested event, Emitter<Authstate> emit) {
+  void _signIn(SignInRequested event, Emitter<Authstate> emit) async{
     emit(AuthLoading());
     try {
-      _auth.signInWithEmailAndPassword(
+       await _auth.signInWithEmailAndPassword(
           email: event.email, password: event.password);
       emit(Authenticated());
     } on FirebaseAuthException catch (e) {
-      emit(AuthError(e.message ?? "login error"));
+      emit(AuthError(e.code));
     }
   }
 
-  void _signUp(SignupIsRequested event, Emitter<Authstate> emit) {
+  void _signUp(SignupIsRequested event, Emitter<Authstate> emit) async{
     emit(AuthLoading());
     try {
-      _auth.createUserWithEmailAndPassword(
+      await  _auth.createUserWithEmailAndPassword(
           email: event.email, password: event.password);
       emit(Authenticated());
     } on FirebaseAuthException catch (e) {
-      emit(AuthError(e.message ?? "Error"));
+      emit(AuthError(e.code));
     }
   }
 
-  void _logOut(LogoutIsRequested event, Emitter<Authstate> emit) {
+  void _logOut(LogoutIsRequested event, Emitter<Authstate> emit) async {
     emit(AuthLoading());
     try {
-      _auth.signOut();
+      await _auth.signOut();
       emit(UnAuthenticated());
     } on FirebaseAuthException catch (e) {
-      emit(AuthError(e.message ?? "Error"));
+      emit(AuthError(e.code));
     }
   }
 }

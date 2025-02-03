@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterbloc/authentication/authBloc/authBloc.dart';
 import 'package:flutterbloc/authentication/events/authEvent.dart';
+import 'package:flutterbloc/ui/components/button/login_signup_btn.dart';
 
 import '../signInScreen.dart';
 
@@ -13,13 +14,13 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Home')),
       body: Center(
-        child: ElevatedButton(
+        child: MyButton(
           onPressed: () {
             context.read<Authbloc>().add(LogoutIsRequested());
               Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
           },
-          child: const Text('Sign Out'),
+          text: 'Sign Out',
         ),
       ),
     );
