@@ -22,7 +22,7 @@ class _MyButtonState extends State<MyButton> {
             borderRadius: BorderRadius.circular(10),
             side: BorderSide(color:  Colors.indigo.shade50),
           ),
-          backgroundColor: const Color.fromARGB(255, 100, 208, 197),
+          backgroundColor: Colors.black,
         ),
         child:  Text(
           widget.text,

@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterbloc/authentication/authBloc/authBloc.dart';
 import 'package:flutterbloc/firebase_options.dart';
 
+import 'ui/OnboardScreens/OnBoardScreen.dart';
+import 'ui/layers/screens/homeScreen.dart';
+import 'ui/layers/screens/orderScreen.dart';
 import 'ui/layers/signInScreen.dart';
 
 Future<void> main() async {
@@ -21,9 +24,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  BlocProvider(
       create: (context) => Authbloc(),
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: OnboardingScreen(),
        ),
       );
   }

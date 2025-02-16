@@ -9,6 +9,7 @@ import 'package:flutterbloc/ui/layers/signInScreen.dart';
 
 import '../components/lottie/lottieLoading.dart';
 import '../components/textfield/textfield.dart';
+import 'widgets/headerLogo.dart';
 
 class SignupScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -19,12 +20,21 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
+               const SizedBox(
+                height: 40,
+              ),
+              // image logo container
+              const LogoHeader(),
+              
+              const SizedBox(
+                height: 120,
+              ),
               MyTextField(
                 controller: _emailController,
                 icon: const Icon(Icons.email),
@@ -39,14 +49,14 @@ class SignupScreen extends StatelessWidget {
                 hintText: 'Password',
                 obscureText: true,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               BlocConsumer<Authbloc, Authstate>(
                 listener: (context, state) {
                   if (state is Authenticated) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomeScreen()));
+                            builder: (context) =>  HomeScreen()));
                   } else if (state is AuthError) {
                     Future.delayed(const Duration(seconds: 0), () {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -77,7 +87,7 @@ class SignupScreen extends StatelessWidget {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
-                child: const Text('Already have an account? Sign In'),
+                child: const Text('Already have an account? Sign In',style: TextStyle(color: Colors.black),),
               ),
             ],
           ),
