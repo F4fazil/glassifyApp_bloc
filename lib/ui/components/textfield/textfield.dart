@@ -39,7 +39,7 @@ class _MyTextFieldState extends State<MyTextField> {
               ? IconButton(
             icon: Icon(
               _isObscured ? Icons.visibility : Icons.visibility_off,
-              color: Colors.teal.shade300,
+              color:Colors.black,
             ),
             onPressed: () {
               setState(() {
@@ -50,10 +50,11 @@ class _MyTextFieldState extends State<MyTextField> {
               : null,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0Xff66cdaa), width: 0.4),
+            borderSide: const BorderSide(color: Colors.black, width: 0.4),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0Xff66cdaa), width: 0.6),
+          focusedBorder:  OutlineInputBorder(
+             borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color:Colors.black, width: 0.6),
           ),
           fillColor: Colors.white.withOpacity(0.7),
           filled: true,
