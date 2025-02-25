@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 
 class AdidasOrderPacking extends StatefulWidget {
-  String? imgpath;
-  String?itemName;
-  double? price;
-  int? quantity;
-   AdidasOrderPacking({super.key, required BuildContext context,this.imgpath,this.itemName,this.price,this.quantity});
+  final String? imgpath;
+  final String? itemName;
+  final double? price;
+  final int? quantity;
+
+  const AdidasOrderPacking({
+    Key? key,
+    required BuildContext context,
+    this.imgpath,
+    this.itemName,
+    this.price,
+    this.quantity,
+  }) : super(key: key);
 
   @override
   _AdidasOrderPackingState createState() => _AdidasOrderPackingState();
@@ -14,12 +22,13 @@ class AdidasOrderPacking extends StatefulWidget {
 class _AdidasOrderPackingState extends State<AdidasOrderPacking>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  int? _selectedTimelineIndex;
-  TextStyle _medium = const TextStyle(
+  int _currentStep = 0;
+  final TextStyle _medium = const TextStyle(
     color: Colors.black,
     fontSize: 20,
   );
-String dateString = DateTime.now().toString().substring(0,10);
+  final String dateString = DateTime.now().toString().substring(0, 10);
+
   @override
   void initState() {
     super.initState();
@@ -40,148 +49,56 @@ String dateString = DateTime.now().toString().substring(0,10);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[100],
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('ORDER DETAILS',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-            )),
+        title: const Text(
+          'ORDER DETAILS',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildOrderStatus(context),
-            _buildOrderTimeline(context),
-            _buildOrderItem(context),
-            _buildOrderDetails(context),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildOrderStatus(context),
+              const SizedBox(height: 16),
+              _buildOrderStepper(context),
+              const SizedBox(height: 16),
+              _buildOrderItem(context),
+              const SizedBox(height: 16),
+              _buildOrderDetails(context),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildOrderStatus(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'WE\'RE PACKING\nYOUR ORDER',
-            style: const TextStyle(
-                fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOrderTimeline(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        children: [
-          _buildTimelineItem(
-            context,
-            icon: Icons.inventory_2_outlined,
-            title: 'PACKING YOUR ORDER',
-            isActive: true,
-            index: 0,
-          ),
-          _buildTimelineItem(
-            context,
-            icon: Icons.local_shipping_outlined,
-            title: 'ON ITS WAY',
-            subtitle: 'We\'ll show your tracking link here when it\'s shipped.',
-            index: 1,
-          ),
-          _buildTimelineItem(
-            context,
-            icon: Icons.calendar_today_outlined,
-            title: 'EXPECTED DELIVERY',
-            subtitle: 'WED, JANUARY 17',
-            isLast: true,
-            index: 2,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTimelineItem(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    String? subtitle,
-    bool isActive = false,
-    bool isLast = false,
-    required int index,
-  }) {
-    final bool isSelected = _selectedTimelineIndex == index;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          if (_selectedTimelineIndex == index) {
-            _selectedTimelineIndex = null;
-            _animationController.reverse();
-          } else {
-            _selectedTimelineIndex = index;
-            _animationController.forward();
-          }
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
+    return Card(
+      color: Colors.grey[200],
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: const Padding(
+        padding: EdgeInsets.all(24),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AnimatedBuilder(
-              animation: _animationController,
-              builder: (context, child) {
-                return Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isActive || isSelected
-                          ? Color.lerp(Colors.black, Colors.blue,
-                              _animationController.value)!
-                          : Colors.grey[300]!,
-                      width: 2,
-                    ),
-                  ),
-                  child: Icon(
-                    icon,
-                    color: isActive || isSelected
-                        ? Color.lerp(Colors.black, Colors.blue,
-                            _animationController.value)
-                        : Colors.grey[400],
-                  ),
-                );
-              },
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: _medium,
-                  ),
-                  if (subtitle != null)
-                    Text(
-                      subtitle,
-                      style: _medium,
-                    ),
-                ],
+            Text(
+              'WE\'RE PACKING\nYOUR ORDER',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
             ),
           ],
@@ -190,96 +107,139 @@ String dateString = DateTime.now().toString().substring(0,10);
     );
   }
 
+  Widget _buildOrderStepper(BuildContext context) {
+    return Stepper(
+      currentStep: _currentStep,
+      onStepTapped: (step) => setState(() => _currentStep = step),
+      onStepContinue:
+          _currentStep < 2 ? () => setState(() => _currentStep += 1) : null,
+      onStepCancel:
+          _currentStep > 0 ? () => setState(() => _currentStep -= 1) : null,
+      steps: [
+        Step(
+          title: const Text('PACKING YOUR ORDER'),
+          content: const Text('We are currently packing your order.'),
+          isActive: _currentStep >= 0,
+          state: _currentStep >= 0 ? StepState.complete : StepState.disabled,
+        ),
+        Step(
+          title: const Text('ON ITS WAY'),
+          content:
+              const Text('We\'ll show your tracking link here when it\'s shipped.'),
+          isActive: _currentStep >= 1,
+          state: _currentStep >= 1 ? StepState.complete : StepState.disabled,
+        ),
+        Step(
+          title: const Text('EXPECTED DELIVERY'),
+          content: const Text('WED, JANUARY 17'),
+          isActive: _currentStep >= 2,
+          state: _currentStep >= 2 ? StepState.complete : StepState.disabled,
+        ),
+      ],
+    );
+  }
+
   Widget _buildOrderItem(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '1 item',
-            style: _medium,
-          ),
-          const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset(
-                 widget.imgpath.toString(),
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                     widget.itemName.toString(),
-                      style: _medium,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-    "Quantity ${widget.quantity.toString()}",
-                      style: _medium,
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const Text(
-                          'Price',
-                          style: TextStyle(
-                            decoration: TextDecoration.none,
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                        '\$${widget.price.toString()}', 
-                          style: _medium,
-                        ),
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Colors.red[50],
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            '-10%',
-                            style: _medium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+    return Card(
+      color: Colors.grey[200],
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '1 item',
+              style: _medium.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(
+                  widget.imgpath.toString(),
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
                 ),
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.itemName.toString(),
+                        style: _medium.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        "Quantity ${widget.quantity.toString()}",
+                        style: _medium.copyWith(color: Colors.grey[600]),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Text(
+                            'Price',
+                            style: TextStyle(
+                              decoration: TextDecoration.none,
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '\$${widget.price.toString()}',
+                            style:
+                                _medium.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.red[50],
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              '-10%',
+                              style: _medium.copyWith(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildOrderDetails(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'ORDER DETAILS',
-            style: _medium,
-          ),
-          const SizedBox(height: 16),
-          _buildDetailRow(context, 'Order Number', 'ASG07328257'),
-          const SizedBox(height: 16),
-          _buildDetailRow(context, 'Order Date',dateString),
-        ],
+    return Card(
+      color: Colors.grey[200],
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'ORDER DETAILS',
+              style: _medium.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            _buildDetailRow(context, 'Order Number', 'ASG07328257'),
+            const SizedBox(height: 16),
+            _buildDetailRow(context, 'Order Date', dateString),
+          ],
+        ),
       ),
     );
   }
@@ -290,11 +250,11 @@ String dateString = DateTime.now().toString().substring(0,10);
       children: [
         Text(
           label,
-          style: _medium,
+          style: _medium.copyWith(color: Colors.grey[600]),
         ),
         Text(
           value,
-          style: _medium,
+          style: _medium.copyWith(fontWeight: FontWeight.bold),
         ),
       ],
     );
