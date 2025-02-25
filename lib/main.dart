@@ -4,11 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterbloc/authentication/authBloc/authBloc.dart';
 import 'package:flutterbloc/firebase_options.dart';
 
-import 'ui/OnboardScreens/OnBoardScreen.dart';
-import 'ui/layers/screens/homeScreen.dart';
-import 'ui/layers/screens/orderScreen.dart';
-import 'ui/layers/signInScreen.dart';
-
+import 'customer_service/customeService.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -24,9 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  BlocProvider(
       create: (context) => Authbloc(),
-      child: const MaterialApp(
+      child:  MaterialApp(
         debugShowCheckedModeBanner: false,
-      home: OnboardingScreen(),
+      home: SupportScreen(),
        ),
       );
   }
