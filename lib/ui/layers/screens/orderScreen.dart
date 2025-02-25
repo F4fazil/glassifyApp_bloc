@@ -47,9 +47,9 @@ class _AdidasOrderPackingState extends State<AdidasOrderPacking>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[100],
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
@@ -88,8 +88,8 @@ class _AdidasOrderPackingState extends State<AdidasOrderPacking>
       color: Colors.grey[200],
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
+      child: const Padding(
+        padding: EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -111,28 +111,27 @@ class _AdidasOrderPackingState extends State<AdidasOrderPacking>
     return Stepper(
       currentStep: _currentStep,
       onStepTapped: (step) => setState(() => _currentStep = step),
-      onStepContinue: _currentStep < 2
-          ? () => setState(() => _currentStep += 1)
-          : null,
-      onStepCancel: _currentStep > 0
-          ? () => setState(() => _currentStep -= 1)
-          : null,
+      onStepContinue:
+          _currentStep < 2 ? () => setState(() => _currentStep += 1) : null,
+      onStepCancel:
+          _currentStep > 0 ? () => setState(() => _currentStep -= 1) : null,
       steps: [
         Step(
-          title: Text('PACKING YOUR ORDER'),
-          content: Text('We are currently packing your order.'),
+          title: const Text('PACKING YOUR ORDER'),
+          content: const Text('We are currently packing your order.'),
           isActive: _currentStep >= 0,
           state: _currentStep >= 0 ? StepState.complete : StepState.disabled,
         ),
         Step(
-          title: Text('ON ITS WAY'),
-          content: Text('We\'ll show your tracking link here when it\'s shipped.'),
+          title: const Text('ON ITS WAY'),
+          content:
+              const Text('We\'ll show your tracking link here when it\'s shipped.'),
           isActive: _currentStep >= 1,
           state: _currentStep >= 1 ? StepState.complete : StepState.disabled,
         ),
         Step(
-          title: Text('EXPECTED DELIVERY'),
-          content: Text('WED, JANUARY 17'),
+          title: const Text('EXPECTED DELIVERY'),
+          content: const Text('WED, JANUARY 17'),
           isActive: _currentStep >= 2,
           state: _currentStep >= 2 ? StepState.complete : StepState.disabled,
         ),
@@ -192,7 +191,8 @@ class _AdidasOrderPackingState extends State<AdidasOrderPacking>
                           const SizedBox(width: 8),
                           Text(
                             '\$${widget.price.toString()}',
-                            style: _medium.copyWith(fontWeight: FontWeight.bold),
+                            style:
+                                _medium.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(width: 8),
                           Container(
